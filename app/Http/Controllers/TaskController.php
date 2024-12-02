@@ -26,7 +26,7 @@ class TaskController extends Controller
         // trazendo apenas tarefas daquela categoria!
         $tasks = Task::fromUser()->orderBy('order')->get();
 
-        return view('admin.pages.home.index', compact('tasks'));
+        return view('tasks.index', compact('tasks'));
     }
 
     /**
@@ -53,15 +53,18 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',            
+            'title' => 'required|string|max:255',
+            'category_id' => 'nullable|exists:categories,id', 
         ], [
             'title.required' => 'O campo titulo é obrigatório!',
-            'title.string' => 'O campo titulo deve ser uma string válida!'
+            'title.string' => 'O campo titulo deve ser uma string válida!',
+            'category_id.exists' => 'A categoria selecionada não é válida!',
             ]);
 
         // criando tarefa
         $task = Task::create( [
-            'title' => $request->title
+            'title' => $request->title,
+            'category_id' => $request->category_id
         ]
         );
 
@@ -98,25 +101,32 @@ class TaskController extends Controller
         ]);
     }
 
-    
-    public function update(Task $task, Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',            
-        ], [
-            'title.required' => 'O campo titulo é obrigatório!',
-            'title.string' => 'O campo titulo deve ser uma string válida!'    
-        ]);
-
-        // pegando a categoria atual antes de atualizar a atarefa
-        $task->update([
-            'title'=> $request->title,
-            'order'=> (int)$request->order,
-        ]);
         
-        return back()->with('menssage', 'Tarefa atualizada com sucesso!');
-       
-    }
+        public function update(Request $request, Task $task)
+    {
+            // Validação do título e do category_id (se fornecido)
+            $request->validate([
+                'title' => 'required|string|max:255',
+                'category_id' => 'nullable|exists:categories,id', 
+                'done' => 'nullable|boolean',
+            ], [
+                'title.required' => 'O campo título é obrigatório!',
+                'title.string' => 'O campo título deve ser uma string válida!',
+                'category_id.exists' => 'A categoria selecionada não é válida!', // Mensagem caso category_id seja inválido
+            ]);
+
+            // Atualizando a tarefa com os dados fornecidos
+            $task->update([
+                'title' => $request->title,
+                'category_id' => $request->category_id ? (int) $request->category_id : null, 
+                'order' => (int) $request->order, 
+                'done' => (bool) $request->done,  
+            ]);
+
+            return back()->with('message', 'Tarefa atualizada com sucesso!');
+        }
+
+    
 
     /**
      * Remove the specified resource from storage.

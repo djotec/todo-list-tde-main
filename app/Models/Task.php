@@ -11,8 +11,9 @@ class Task extends Model
     protected $fillable = [
         'title',
         'description',
-        'doned',
-        'order'
+        'done',
+        'order',
+        'category_id'
     ];
     protected static function booted()
     {
@@ -28,8 +29,10 @@ class Task extends Model
     {
         $query->where('user_id', auth()->user()->id);
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
     
-
-
-
 }

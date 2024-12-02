@@ -30,11 +30,10 @@ class CategoryController extends Controller
         // Validação dos dados
         $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'required|string|max:500',
+            'description' => 'string|max:500',
         ], [
             'name.required' => 'O campo nome é obrigatório!',
             'name.string' => 'O campo nome deve ser uma string válida!',
-            'description.required' => 'Comente algo sobre esta categoria no campo descrição!',
             'description.string' => 'O campo descrição deve ser uma string válida!',
         ]);
 
@@ -87,4 +86,6 @@ class CategoryController extends Controller
         }
         return redirect()->route('home')->with('error', 'Categoria não excluida!');
     }
+
+
 }

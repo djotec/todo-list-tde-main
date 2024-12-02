@@ -1,41 +1,59 @@
-@extends('master')
+@extends('layouts.master')
+
 
 @section('content')
-    <a href="{{ route('welcome') }}">Voltar</a> |
-    <a href="{{ route('register.index') }}">Registrar-se</a>
+    <style>
+        :root{
+            --block-spacing-vertical: calc(var(--spacing) * 2);
+        }
+    </style>
 
-    <h2>Login</h2>
+    <article class="grid container-md py-5 px-4" style="box-shadow: none;">
+        <div>
+                
+            <hgroup>
+                <h1>Login</h1>
+            </hgroup>
+            
+            <form action="{{ route('login.store') }}" method="POST">
+                @csrf
+                {{-- Email --}}
+                <input type="text" class="form-control" name="email" placeholder="Login...">
+                @error('email')
+                    <div style="color: red;">
+                        {{ $message }}
+                    </div>
+                @enderror
 
-    @error('error')
-        <span>{{ $message }}</span>
-    @enderror
+                {{-- Password --}}
+                <input type="password" name="password" placeholder="Password">
+                @error('password')
+                    <div style="color: red;">
+                        {{ $message }}
+                    </div>
+                @enderror
 
-    @if (session('menssage'))
-        <div style="color: green;">
-            {{ session('menssage') }}
+
+                <input class="contrast" name="submit" type="submit"  value="Login">
+            </form>
+
+            
+            @error('error')
+                <span>{{ $message }}</span>
+            @enderror
+
+            @if (session('menssage'))
+                <div style="color: green;">
+                    {{ session('menssage') }}
+                </div>
+            @endif
+                    
+            <div>
+               <span class="text-center d-block"> Não tem uma conta? Cadastre-se 
+                <a  href="{{ route('register.index') }}">Registrar-se</a></span>
+            </div>
         </div>
-    @endif
-    <form action="{{ route('login.store') }}" method="POST">
-        @csrf
-        {{-- Email --}}
-        <label for="email">Email:</label>
-        <input type="text" name="email" placeholder="email...">
-        @error('email')
-            <div style="color: red;">
-                {{ $message }}
-            </div>
-        @enderror
+        <div></div>
+    </article>
 
-        {{-- Password --}}
-        <label for="password">Senha:</label>
-        <input type="password" name="password" placeholder="senha...">
-        @error('password')
-            <div style="color: red;">
-                {{ $message }}
-            </div>
-        @enderror
-
-
-        <button type="submit">Entrar</button>
-    </form>
 @endsection

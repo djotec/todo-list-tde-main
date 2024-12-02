@@ -11,7 +11,8 @@ class Category extends Model
     protected $fillable = [
         'name',
         'description',
-        'user_id'
+        'user_id',
+        'category_id',
     ];
 
     public function user(): BelongsTo
@@ -22,5 +23,9 @@ class Category extends Model
     public function tasks(): HasMany
     {
         return $this->hasMany(Task::class);
+    }
+    public function taskCount()
+    {
+        return $this->tasks()->count();
     }
 }

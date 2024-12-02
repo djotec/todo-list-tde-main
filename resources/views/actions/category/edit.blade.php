@@ -1,4 +1,5 @@
-@extends('master') @section('content')
+@extends('layouts.master')
+ @section('content')
     <a href="{{ route('home') }}">Voltar</a>
     <div>
         <form action="{{ route('categories.update', ['category' => $category->id]) }}" method="POST">

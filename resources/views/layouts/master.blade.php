@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
 <head>
     <meta charset="UTF-8">
@@ -14,19 +14,35 @@
     
     <!-- Alpine Core -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
+    <!-- Import Pico.css -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    
+    <style>
+        .width-25{
+            width: 25%;
+        }
+        :root:not([data-theme="dark"]), [data-theme="light"] {
+            --pico-background-color: #f4f3f5;
+        }
+        body {
+            background-color:unset; 
+        }
+        .sidebar-main{
+            background: #fff;
+            border-radius: 6px;
 
+        }
+    </style>
 
 
     @yield('css')
 
 </head>
 
-<body data-theme="light">
-    <div>
+<body >
+    <main class="container">
         @yield('content')
-    </div>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">

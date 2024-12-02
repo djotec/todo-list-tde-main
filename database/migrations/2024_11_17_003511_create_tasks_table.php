@@ -16,9 +16,14 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->foreignId('user_id')->nullable();
+            $table->foreignId('category_id')->nullable();
             $table->boolean('done')->default(false);
-            $table->integer('order')->default(1);           
+            $table->integer('order')->default(value: 1);        
             $table->timestamps();           
+        });
+
+        Schema::table('tasks', function (Blueprint $table) {
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
         });
     }
 
